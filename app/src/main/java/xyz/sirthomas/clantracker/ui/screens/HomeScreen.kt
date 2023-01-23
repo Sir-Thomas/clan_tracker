@@ -22,14 +22,14 @@ fun HomeScreen(
     clashUiState: ClashUiState,
     updateTag: (String) -> Unit,
     lookupPlayer: () -> Unit,
-    retryAction: () -> Unit,
+    backAction: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     when (clashUiState) {
         is ClashUiState.Start -> StartScreen(tag, updateTag, lookupPlayer, modifier)
         is ClashUiState.Loading -> LoadingScreen(modifier)
         is ClashUiState.Success -> PlayerDisplayScreen(clashUiState.player, modifier)
-        is ClashUiState.Error -> ErrorScreen(clashUiState.e, retryAction, modifier)
+        is ClashUiState.Error -> ErrorScreen(clashUiState.e, backAction, modifier)
     }
 }
 
@@ -48,7 +48,7 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ErrorScreen(e: Exception, retryAction: () -> Unit, modifier: Modifier = Modifier) {
+fun ErrorScreen(e: Exception, backAction: () -> Unit, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -56,8 +56,8 @@ fun ErrorScreen(e: Exception, retryAction: () -> Unit, modifier: Modifier = Modi
     ) {
         Text(stringResource(R.string.loading_failed))
         Text(e.toString())
-        Button(onClick = retryAction) {
-            Text(stringResource(R.string.retry))
+        Button(onClick = backAction) {
+            Text(stringResource(R.string.back))
         }
     }
 }

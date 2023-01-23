@@ -52,6 +52,10 @@ class ClanTrackerViewModel(private val clashData: ClashData) : ViewModel() {
         }
     }
 
+    fun restart() {
+        clashUiState = ClashUiState.Start
+    }
+
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
