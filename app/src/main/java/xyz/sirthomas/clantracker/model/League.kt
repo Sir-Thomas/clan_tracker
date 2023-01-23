@@ -6,12 +6,12 @@ import kotlinx.serialization.Serializable
 data class League(
     val id: Int,
     val name: String,
-    val iconUrls: LeagueIconUrls,
+    val iconUrls: LeagueIconUrls? = null,
 )
 
 @Serializable
 data class LeagueIconUrls(
-    val tiny: String,
-    val small: String,
-    val medium: String,
+    val tiny: String? = null,
+    val small: String? = null,
+    val medium: String? = null,
 )

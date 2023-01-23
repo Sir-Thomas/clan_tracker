@@ -29,7 +29,7 @@ fun ClanTrackerApp(modifier: Modifier = Modifier) {
                 tag = clanTrackerViewModel.tag,
                 clashUiState = clanTrackerViewModel.clashUiState,
                 updateTag = { clanTrackerViewModel.updateTag(it) },
-                lookupPlayer = { clanTrackerViewModel.getPlayerInfo() },
+                lookupPlayer = { clanTrackerViewModel.getClanInfo() },
                 backAction = { clanTrackerViewModel.restart() }
             )
         }

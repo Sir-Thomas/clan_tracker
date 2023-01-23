@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
@@ -12,8 +13,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import xyz.sirthomas.clantracker.R
+import xyz.sirthomas.clantracker.model.Clan
 import xyz.sirthomas.clantracker.model.Player
 
 @Composable
@@ -28,7 +31,7 @@ fun HomeScreen(
     when (clashUiState) {
         is ClashUiState.Start -> StartScreen(tag, updateTag, lookupPlayer, modifier)
         is ClashUiState.Loading -> LoadingScreen(modifier)
-        is ClashUiState.Success -> PlayerDisplayScreen(clashUiState.player, modifier)
+        is ClashUiState.Success -> ClanDisplayScreen(clashUiState.clan, modifier)
         is ClashUiState.Error -> ErrorScreen(clashUiState.e, backAction, modifier)
     }
 }
@@ -63,14 +66,14 @@ fun ErrorScreen(e: Exception, backAction: () -> Unit, modifier: Modifier = Modif
 }
 
 @Composable
-fun PlayerDisplayScreen(player: Player, modifier: Modifier = Modifier) {
+fun ClanDisplayScreen(clan: Clan, modifier: Modifier = Modifier) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier.fillMaxSize()
     ) {
         Text(
-            player.toString(),
-            modifier = Modifier.verticalScroll(rememberScrollState())
+            text = clan.name,
+            style = MaterialTheme.typography.h1
         )
     }
 }

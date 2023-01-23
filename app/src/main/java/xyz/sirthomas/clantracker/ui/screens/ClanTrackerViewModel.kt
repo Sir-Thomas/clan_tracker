@@ -15,12 +15,13 @@ import kotlinx.serialization.MissingFieldException
 import retrofit2.HttpException
 import xyz.sirthomas.clantracker.ClanTrackerApplication
 import xyz.sirthomas.clantracker.data.ClashData
+import xyz.sirthomas.clantracker.model.Clan
 import xyz.sirthomas.clantracker.model.Player
 import java.io.IOException
 
 sealed interface ClashUiState {
     object Start : ClashUiState
-    data class Success(val player: Player) : ClashUiState
+    data class Success(val clan: Clan) : ClashUiState
     data class Error(val e: Exception) : ClashUiState
     object Loading : ClashUiState
 }
@@ -37,11 +38,11 @@ class ClanTrackerViewModel(private val clashData: ClashData) : ViewModel() {
     }
 
     @OptIn(ExperimentalSerializationApi::class)
-    fun getPlayerInfo() {
+    fun getClanInfo() {
         viewModelScope.launch {
             clashUiState = ClashUiState.Loading
             clashUiState = try {
-                ClashUiState.Success(clashData.getPlayerData(tag.trim('#')))
+                ClashUiState.Success(clashData.getClanData(tag.trim('#')))
             } catch (e: IOException) {
                 ClashUiState.Error(e)
             } catch (e: HttpException) {
