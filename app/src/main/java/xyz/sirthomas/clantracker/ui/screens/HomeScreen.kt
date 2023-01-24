@@ -1,93 +1,49 @@
 package xyz.sirthomas.clantracker.ui.screens
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.RadioButton
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import xyz.sirthomas.clantracker.R
-import xyz.sirthomas.clantracker.model.Clan
-import xyz.sirthomas.clantracker.model.Player
 
 @Composable
 fun HomeScreen(
     tag: String,
-    clashUiState: ClashUiState,
     updateTag: (String) -> Unit,
-    lookupPlayer: () -> Unit,
-    backAction: () -> Unit,
+    searchType: SearchType,
+    updateSearchType: (SearchType) -> Unit,
+    search: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    when (clashUiState) {
-        is ClashUiState.Start -> StartScreen(tag, updateTag, lookupPlayer, modifier)
-        is ClashUiState.Loading -> LoadingScreen(modifier)
-        is ClashUiState.Success -> ClanDisplayScreen(clashUiState.clan, modifier)
-        is ClashUiState.Error -> ErrorScreen(clashUiState.e, backAction, modifier)
-    }
-}
-
-@Composable
-fun LoadingScreen(modifier: Modifier = Modifier) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier.fillMaxSize()
-    ) {
-        Image(
-            modifier = Modifier.size(200.dp),
-            painter = painterResource(R.drawable.loading_img),
-            contentDescription = stringResource(R.string.loading)
-        )
-    }
-}
-
-@Composable
-fun ErrorScreen(e: Exception, backAction: () -> Unit, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(stringResource(R.string.loading_failed))
-        Text(e.toString())
-        Button(onClick = backAction) {
-            Text(stringResource(R.string.back))
-        }
-    }
-}
-
-@Composable
-fun ClanDisplayScreen(clan: Clan, modifier: Modifier = Modifier) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier.fillMaxSize()
-    ) {
-        Text(
-            text = clan.name,
-            style = MaterialTheme.typography.h1
-        )
-    }
-}
-
-@Composable
-fun StartScreen(tag: String, setTag: (String) -> Unit, lookupPlayer: () -> Unit, modifier: Modifier = Modifier) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier.fillMaxSize()
     ) {
         Column {
-            TextField(value = tag, onValueChange = setTag)
-            Button(onClick = lookupPlayer) {
-                Text(stringResource(R.string.search))
+            TextField(value = tag, onValueChange = updateTag)
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                RadioButton(
+                    selected = searchType == SearchType.Clan,
+                    onClick = { updateSearchType(SearchType.Clan) }
+                )
+                Text(stringResource(R.string.clan))
+                RadioButton(
+                    selected = searchType == SearchType.Player,
+                    onClick = { updateSearchType(SearchType.Player) }
+                )
+                Text(stringResource(R.string.player))
+                Spacer(modifier = Modifier.width(16.dp))
+                Button(onClick = search) {
+                    Text(stringResource(R.string.search))
+                }
             }
         }
     }

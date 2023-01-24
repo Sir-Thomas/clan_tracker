@@ -1,5 +1,6 @@
 package xyz.sirthomas.clantracker.ui.screens
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,15 +20,23 @@ import xyz.sirthomas.clantracker.model.Clan
 import xyz.sirthomas.clantracker.model.Player
 import java.io.IOException
 
+//DEBUG
+private const val TAG = "ViewModel"
+
+enum class SearchType {
+    Clan,
+    Player
+}
+
 sealed interface ClashUiState {
-    object Start : ClashUiState
-    data class Success(val clan: Clan) : ClashUiState
+    data class ClanUiState(val clan: Clan) : ClashUiState
+    data class PlayerUiState(val player: Player) : ClashUiState
     data class Error(val e: Exception) : ClashUiState
     object Loading : ClashUiState
 }
 
 class ClanTrackerViewModel(private val clashData: ClashData) : ViewModel() {
-    var clashUiState: ClashUiState by mutableStateOf(ClashUiState.Start)
+    var clashUiState: ClashUiState by mutableStateOf(ClashUiState.Loading)
         private set
 
     var tag: String by mutableStateOf("")
@@ -37,12 +46,25 @@ class ClanTrackerViewModel(private val clashData: ClashData) : ViewModel() {
         tag = t
     }
 
+    var searchType: SearchType by mutableStateOf(SearchType.Clan)
+        private set
+
+    fun updateSearchType(s: SearchType) {
+        searchType = s
+        Log.d(TAG, "Search Type: $searchType")
+    }
+
     @OptIn(ExperimentalSerializationApi::class)
-    fun getClanInfo() {
+    fun search() {
         viewModelScope.launch {
             clashUiState = ClashUiState.Loading
             clashUiState = try {
-                ClashUiState.Success(clashData.getClanData(tag.trim('#')))
+                when (searchType) {
+                    SearchType.Clan ->
+                        ClashUiState.ClanUiState(clashData.getClanData(tag.trim('#')))
+                    SearchType.Player ->
+                        ClashUiState.PlayerUiState(clashData.getPlayerData(tag.trim('#')))
+                }
             } catch (e: IOException) {
                 ClashUiState.Error(e)
             } catch (e: HttpException) {
@@ -51,10 +73,6 @@ class ClanTrackerViewModel(private val clashData: ClashData) : ViewModel() {
                 ClashUiState.Error(e)
             }
         }
-    }
-
-    fun restart() {
-        clashUiState = ClashUiState.Start
     }
 
     companion object {

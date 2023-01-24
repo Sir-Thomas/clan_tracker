@@ -9,7 +9,7 @@ data class Clan(
     val type: String? = null,
     val description: String? = null,
     val location: ClanLocation? = null,
-    val isFamilyFriendly: Boolean,
+    val isFamilyFriendly: Boolean? = null,
     val badgeUrls: BadgeUrls,
     val clanLevel: Int,
     val clanPoints: Int? = null,

@@ -4,4 +4,7 @@
     <string name="back">Back</string>
     <string name="loading">Loading</string>
     <string name="search">Search</string>
+    <string name="player">Player</string>
+    <string name="clan">Clan</string>
+    <string name="back_button">Back</string>
 </resources>
