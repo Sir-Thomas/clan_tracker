@@ -12,6 +12,6 @@ interface ClashData {
 class NetworkClashData(
     private val clashApiService: ClashApiService
 ) : ClashData {
-    override suspend fun getPlayerData(tag: String): Player = clashApiService.getPlayer(tag)
-    override suspend fun getClanData(tag: String): Clan = clashApiService.getClan(tag)
+    override suspend fun getPlayerData(tag: String): Player = clashApiService.getPlayer(tag.trim('#'))
+    override suspend fun getClanData(tag: String): Clan = clashApiService.getClan(tag.trim('#'))
 }

@@ -61,9 +61,9 @@ class ClanTrackerViewModel(private val clashData: ClashData) : ViewModel() {
             clashUiState = try {
                 when (searchType) {
                     SearchType.Clan ->
-                        ClashUiState.ClanUiState(clashData.getClanData(tag.trim('#')))
+                        ClashUiState.ClanUiState(clashData.getClanData(tag))
                     SearchType.Player ->
-                        ClashUiState.PlayerUiState(clashData.getPlayerData(tag.trim('#')))
+                        ClashUiState.PlayerUiState(clashData.getPlayerData(tag))
                 }
             } catch (e: IOException) {
                 ClashUiState.Error(e)
