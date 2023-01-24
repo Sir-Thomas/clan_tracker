@@ -1,5 +1,6 @@
 package xyz.sirthomas.clantracker.ui.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -17,6 +18,7 @@ import coil.request.ImageRequest
 import xyz.sirthomas.clantracker.R
 import xyz.sirthomas.clantracker.model.Clan
 import xyz.sirthomas.clantracker.model.Player
+import xyz.sirthomas.clantracker.util.getTownhallImage
 
 @Composable
 fun ClanDisplay(clan: Clan, modifier: Modifier = Modifier) {
@@ -26,39 +28,61 @@ fun ClanDisplay(clan: Clan, modifier: Modifier = Modifier) {
             .padding(8.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            AsyncImage(
-                model = ImageRequest.Builder(context = LocalContext.current)
-                    .data(clan.badgeUrls.medium)
-                    .crossfade(true)
-                    .build(),
-                error = painterResource(R.drawable.ic_broken_image),
-                placeholder = painterResource(R.drawable.loading_img),
-                contentDescription = null,
-                contentScale = ContentScale.FillBounds,
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = clan.name,
-                style = MaterialTheme.typography.h1
-            )
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = clan.tag,
-            style = MaterialTheme.typography.h2
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        clan.description?.let {
-            Text(
-                text = it,
-                style = MaterialTheme.typography.h2
-            )
-        }
+        NameTagDisplay(clan = clan)
         Spacer(modifier = Modifier.height(8.dp))
         MemberList(clan.memberList)
+    }
+}
+
+@Composable
+fun NameTagDisplay(clan: Clan) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        AsyncImage(
+            model = ImageRequest.Builder(context = LocalContext.current)
+                .data(clan.badgeUrls.medium)
+                .crossfade(true)
+                .build(),
+            error = painterResource(R.drawable.ic_broken_image),
+            placeholder = painterResource(R.drawable.loading_img),
+            contentDescription = null,
+            contentScale = ContentScale.FillBounds,
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = clan.name,
+            style = MaterialTheme.typography.h1
+        )
+    }
+    Spacer(modifier = Modifier.height(8.dp))
+    Text(
+        text = clan.tag,
+        style = MaterialTheme.typography.h2
+    )
+    Spacer(modifier = Modifier.height(8.dp))
+    clan.description?.let {
+        Text(
+            text = it,
+            style = MaterialTheme.typography.h2
+        )
+    }
+}
+
+@Composable
+fun TownhallSpread(memberList: List<Player>) {
+    val groupedByTownHallLevel = memberList.groupBy { member -> member.townHallLevel }
+    Row {
+        groupedByTownHallLevel.forEach { (lvl, players) ->
+            Column {
+                Image(
+                    painter = painterResource(getTownhallImage(lvl)),
+                    contentDescription = "Town Hall $lvl",
+                    modifier = Modifier.size(50.dp)
+                )
+                Text(text = "${players.size}")
+            }
+        }
     }
 }
 
