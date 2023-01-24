@@ -7,4 +7,5 @@
     <string name="player">Player</string>
     <string name="clan">Clan</string>
     <string name="back_button">Back</string>
+    <string name="enter_tag">Enter Tag</string>
 </resources>

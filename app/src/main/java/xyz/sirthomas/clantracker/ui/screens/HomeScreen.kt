@@ -1,14 +1,14 @@
 package xyz.sirthomas.clantracker.ui.screens
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.RadioButton
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import xyz.sirthomas.clantracker.R
 
@@ -26,7 +26,18 @@ fun SearchScreen(
         modifier = modifier.fillMaxSize()
     ) {
         Column {
-            TextField(value = tag, onValueChange = updateTag)
+            TextField(
+                value = tag,
+                onValueChange = updateTag,
+                singleLine = true,
+                label = { Text(stringResource(R.string.enter_tag)) },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = { search() }
+                )
+            )
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
