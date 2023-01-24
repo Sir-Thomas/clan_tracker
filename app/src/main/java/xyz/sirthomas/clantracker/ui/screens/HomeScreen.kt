@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import xyz.sirthomas.clantracker.R
 
 @Composable
-fun HomeScreen(
+fun SearchScreen(
     tag: String,
     updateTag: (String) -> Unit,
     searchType: SearchType,

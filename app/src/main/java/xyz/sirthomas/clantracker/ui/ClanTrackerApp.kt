@@ -48,7 +48,7 @@ fun ClanTrackerApp(
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = ClanTrackerScreen.valueOf(
-        backStackEntry?.destination?.route ?: ClanTrackerScreen.Start.name
+        backStackEntry?.destination?.route ?: ClanTrackerScreen.Search.name
     )
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -65,11 +65,11 @@ fun ClanTrackerApp(
 
         NavHost(
             navController = navController,
-            startDestination = ClanTrackerScreen.Start.name,
+            startDestination = ClanTrackerScreen.Search.name,
             modifier = modifier.padding(innerPadding)
         ) {
-            composable(route = ClanTrackerScreen.Start.name) {
-                HomeScreen(
+            composable(route = ClanTrackerScreen.Search.name) {
+                SearchScreen(
                     tag = clanTrackerViewModel.tag,
                     updateTag = { clanTrackerViewModel.updateTag(it) },
                     searchType = clanTrackerViewModel.searchType,
