@@ -9,15 +9,11 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
-import xyz.sirthomas.clantracker.R
 import xyz.sirthomas.clantracker.model.Clan
 import xyz.sirthomas.clantracker.model.Player
+import xyz.sirthomas.clantracker.util.ShowIcon
 import xyz.sirthomas.clantracker.util.getTownhallImage
 
 @Composable
@@ -39,16 +35,7 @@ fun NameTagDisplay(clan: Clan) {
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
-        AsyncImage(
-            model = ImageRequest.Builder(context = LocalContext.current)
-                .data(clan.badgeUrls.medium)
-                .crossfade(true)
-                .build(),
-            error = painterResource(R.drawable.ic_broken_image),
-            placeholder = painterResource(R.drawable.loading_img),
-            contentDescription = null,
-            contentScale = ContentScale.FillBounds,
-        )
+        ShowIcon(clan.badgeUrls.medium)
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = clan.name,
@@ -58,13 +45,13 @@ fun NameTagDisplay(clan: Clan) {
     Spacer(modifier = Modifier.height(8.dp))
     Text(
         text = clan.tag,
-        style = MaterialTheme.typography.h2
+        style = MaterialTheme.typography.h3
     )
     Spacer(modifier = Modifier.height(8.dp))
     clan.description?.let {
         Text(
             text = it,
-            style = MaterialTheme.typography.h2
+            style = MaterialTheme.typography.h3
         )
     }
 }
@@ -89,6 +76,15 @@ fun TownhallSpread(memberList: List<Player>) {
 @Composable
 fun MemberList(members: List<Player>?) {
     members?.forEach {
-        Text(text = it.name)
+        Row {
+            ShowIcon(url = it.league?.iconUrls?.small)
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = it.name,
+                style = MaterialTheme.typography.h2
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(text = it.role!!)
+        }
     }
 }
