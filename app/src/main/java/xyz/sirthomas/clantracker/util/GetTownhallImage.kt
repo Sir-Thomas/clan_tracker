@@ -4,7 +4,7 @@ import androidx.annotation.DrawableRes
 import xyz.sirthomas.clantracker.R
 
 @DrawableRes
-fun getTownhallImage(townHall: Int?, weapon: Int?): Int {
+fun getTownhallImage(townHall: Int?, weapon: Int? = null): Int {
     return when (townHall) {
         1 -> R.drawable.townhall_1
         2 -> R.drawable.townhall_2
