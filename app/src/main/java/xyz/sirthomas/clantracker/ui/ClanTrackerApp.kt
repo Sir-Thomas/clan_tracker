@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -81,13 +82,20 @@ fun ClanTrackerApp(
                             SearchType.Player -> navController.navigate(ClanTrackerScreen.Player.name)
                         }
                     },
+                    modifier = Modifier.padding(8.dp)
                 )
             }
             composable(route = ClanTrackerScreen.Clan.name) {
-                DisplayScreen(clashUiState = clanTrackerViewModel.clashUiState)
+                DisplayScreen(
+                    clashUiState = clanTrackerViewModel.clashUiState,
+                    modifier = Modifier.padding(8.dp)
+                )
             }
             composable(route = ClanTrackerScreen.Player.name) {
-                DisplayScreen(clashUiState = clanTrackerViewModel.clashUiState)
+                DisplayScreen(
+                    clashUiState = clanTrackerViewModel.clashUiState,
+                    modifier = Modifier.padding(8.dp)
+                )
             }
         }
     }
